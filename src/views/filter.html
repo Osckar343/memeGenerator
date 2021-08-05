@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact</title>
+    <%- include ('partials/head.html')%>
+    <script src="https://www.lactame.com/lib/image-js/0.21.2/image.min.js"></script>
+
+
+</head>
+<body>
+    <%- include ('partials/navigation.html')%>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 offset-md-4">
+                <div class="card-body">
+                    <form action="">
+                       <select multiple="multiple" class="image-picker show-html">
+                            <option data-img-src="http://placekitten.com/220/200" value="1">Cute Kitten 1</option>
+                            <option data-img-src="http://placekitten.com/180/200" value="2">Cute Kitten 2</option>
+                            <option data-img-src="http://placekitten.com/130/200" value="3">Cute Kitten 3</option>
+                            <option data-img-src="http://placekitten.com/270/200" value="4">Cute Kitten 4</option>
+                        </select>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <%- include ('partials/footer.html') %>
+
+
+        <!--<% for (let i = 0; i < data.length; i++) { %>
+            <%- include('partials/images.html', {url: data[i].url }); %>
+        <%} %>-->
+
+             
+
+
+     <% if(data!=null){ %>    
+        <div> Data Entered as <%= data.first %>  <%= data.last %> </div>
+    <%}%> 
+
+
+    <!--<%= data %>-->
+   
+</body>
+</html>

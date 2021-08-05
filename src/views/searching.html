@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>First Node Website</title>
+    <%- include ('partials/head.html')%>
+    <script src="https://www.lactame.com/lib/image-js/0.21.2/image.min.js"></script>
+</head>
+<body>
+ 
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+         <a class="navbar-brand" href="/">MemeUrlGenerator</a>
+         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+             <span class="navbar-toggler-icon"></span>
+         </button>
+         <div class="collapse navbar-collapse" id="navbarNav">
+             <ul class="navbar-nav ml-auto">
+                 <li class="nav-item active">
+                    <a class="nav-link disabled">Start</a>
+                 </li>
+                 <li class="nav-item">
+                     <a class="nav-link">Searching<span class="sr-only">(current)</span></a>
+                 </li>
+                 <li class="nav-item active">
+                    <a class="nav-link"> -> <span class="sr-only">(current)</span></a>
+                </li>
+                 <li class="nav-item">
+                     <a class="nav-link">Filter</a>
+                 </li>
+             </ul>
+         </div>
+        </div>
+     </nav>
+     <img id="result">
+
+    <% var aux = []; %>
+    <% for (let i = 0; i < results.length; i++) { %>
+        <%- include('partials/images.html', {url: results[i].url }); %>
+        <% aux[i] = results[i].url %>
+    <%} %>
+
+     <script>
+
+        function test ( ) {
+            const size = "<%= aux.length %>";
+            
+            let content = "<%= aux %>";
+            array = content.split(',');
+
+            for (let i = 0; i < array.length; i++) {
+                console.log((i + 1) + ' ' + array[i]);
+            }
+            console.log('Size is: ' + size);
+
+            /*for (const property in content) {
+                console.log(`${property}: ${content[property]}`);
+                console.log('AAAAAA');
+            }*/
+        }
+
+        test();
+
+     </script>
+
+       
+
+
+    <div class="container" style="height: 100vh; display: flex; justify-content: center; align-items: center; ">
+        <header class="row">
+            <div class="col-lg-12 text-center" style="max-width: 1000px; width: 100vw; padding-bottom: 100px;">
+                <h1 class="animate__animated animate__bounceIn text-white p-18 text-center">Let's find some memes</h1>
+                <!--<img  class="animate__animated animate__bounceIn" src="/img/Nana_Anime.png">-->
+                <div class="container" >
+                    <form action="">
+                        <select  multiple="multiple" class="image-picker show-html">
+                            <option data-img-src="http://placekitten.com/220/200" value="1">Cute Kitten 1</option>
+                            <option data-img-src="http://placekitten.com/180/200" value="2">Cute Kitten 2</option>
+                            <option data-img-src="http://placekitten.com/130/200" value="3">Cute Kitten 3</option>
+                            <option data-img-src="http://placekitten.com/270/200" value="4">Cute Kitten 4</option> 
+                        </select>
+                        <script>
+                           
+
+                        </script>
+                    </form>
+                </div>
+        </header>
+    </div>
+
+    <div class="container-fluid" id="about">
+        <div class="row bg-dark text-white p-5 text-center">
+            <div class="col-sm-6">
+                <i class="fab fa-youtube fa-10x"></i>
+            </div>
+            <div class="col-sm-6">
+                <h3>URL Memeify Generator</h3>
+                <p>A simple meme web searcher, created to complement the discord bot Memeify. <br>By Óscar Méndez.</p>
+
+            </div>
+        </div>
+    </div>
+    <%- include ('partials/footer.html')%>
+</body>
+</html>

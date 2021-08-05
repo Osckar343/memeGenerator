@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>First Node Website</title>
+    <%- include ('partials/head.html')%>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+         <a class="navbar-brand" href="/">MemeUrlGenerator</a>
+         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+             <span class="navbar-toggler-icon"></span>
+         </button>
+         <div class="collapse navbar-collapse" id="navbarNav">
+             <ul class="navbar-nav ml-auto">
+                 <li class="nav-item active">
+                     <a class="nav-link">Start<span class="sr-only">(current)</span></a>
+                 </li>
+                 <li class="nav-item active">
+                    <a class="nav-link"> -> <span class="sr-only">(current)</span></a>
+                </li>
+                 <li class="nav-item">
+                     <a class="nav-link">Searching</a>
+                 </li>
+                 <li class="nav-item">
+                     <a class="nav-link disabled" href="/filter">Filter</a>
+                 </li>
+             </ul>
+         </div>
+        </div>
+     </nav>
+
+    <div class="container" style="height: 100vh; display: flex; justify-content: center; align-items: center; ">
+        <header class="row">
+            <div class="col-lg-12 text-center" style="max-width: 1000px; width: 100vw; padding-bottom: 100px;">
+                <h1 class="animate__animated animate__bounceIn text-white p-18 text-center">Let's find some memes</h1>
+                <!--<img  class="animate__animated animate__bounceIn" src="/img/Nana_Anime.png">-->
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-4 offset-md-4">
+                            <div class="card-body animate__animated animate__fadeInUp">
+                                <form name="form1" method="POST" action="/searching">
+                                    <div class="form-group">
+                                        <input type="text" name="topic" class="form-control" placeholder="Meme">
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                              <label class="input-group-text" for="inputGroupSelect01">Language</label>
+                                            </div>
+                                            <select class="custom-select" name="language">
+                                              <option value="ALL" selected>All</option>
+                                              <option value="ES">Spanish</option>
+                                              <option value="EN">English</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-check form-check-inline">
+                                        <input checked class="form-check-input" type="checkbox" name="filter" value="true">
+                                        <label style="color: white" class="form-check-label" for="inlineCheckbox1">Filter</label>
+                                    </div>
+
+                                    <td colspan="2"><input class="btn btn-light" type="submit" value="Search" ></td>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </header>
+    </div>
+
+    <div class="container-fluid" id="about">
+        <div class="row bg-dark text-white p-5 text-center">
+            <div class="col-sm-6">
+                <i class="fab fa-youtube fa-10x"></i>
+            </div>
+            <div class="col-sm-6">
+                <h3>URL Memeify Generator</h3>
+                <p>A simple meme web searcher, created to complement the discord bot Memeify. <br>By Óscar Méndez.</p>
+
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
