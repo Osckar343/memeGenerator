@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>First Node Website</title>
     <%- include ('partials/head.html')%>
+    <link rel="stylesheet" href="/css/image-picker.css">
     <script src="https://www.lactame.com/lib/image-js/0.21.2/image.min.js"></script>
 </head>
 <body>
@@ -35,34 +36,66 @@
          </div>
         </div>
      </nav>
-     <img id="result">
 
     <% var aux = []; %>
     <% for (let i = 0; i < results.length; i++) { %>
-        <%- include('partials/images.html', {url: results[i].url }); %>
-        <% aux[i] = results[i].url %>
+        <% aux.push( results[i].url.replace(/,/g,'¿') ); %> 
     <%} %>
+
+    <div id="gallery">
+
+    </div>
+
+    <!--<ul>
+        <li><input type="checkbox" id="cb1" />
+          <label for="cb1"><img src="https://picsum.photos/seed/1/100" /></label>
+        </li>
+        <li><input type="checkbox" id="cb2" />
+          <label for="cb2"><img src="https://picsum.photos/seed/2/100" /></label>
+        </li>
+        <li><input type="checkbox" id="cb3" />
+          <label for="cb3"><img src="https://picsum.photos/seed/3/100" /></label>
+        </li>
+        <li><input type="checkbox" id="cb4" />
+          <label for="cb4"><img src="https://picsum.photos/seed/4/100" /></label>
+        </li>
+    </ul>-->
+
 
      <script>
 
-        function test ( ) {
-            const size = "<%= aux.length %>";
-            
+        function test ( ) {         
             let content = "<%= aux %>";
-            array = content.split(',');
+            const array = content.split(',');
+
+            const originalSize = "<%= aux.length %>";
+            const newSize = array.length;
 
             for (let i = 0; i < array.length; i++) {
+                array[i] = array[i].replace(/¿/g,','); //-- Reconvert (¿) to (,) -->
                 console.log((i + 1) + ' ' + array[i]);
             }
-            console.log('Size is: ' + size);
 
-            /*for (const property in content) {
-                console.log(`${property}: ${content[property]}`);
-                console.log('AAAAAA');
-            }*/
+            console.log('Original size is: ' + originalSize);
+            console.log('New Size is: ' + newSize);
+
+            return array;
         }
 
-        test();
+        function print (array) {
+            let html = '<ul>';
+
+            for (let i = 0; i < array.length; i++) {
+                html  += '<li><input type="checkbox" id="cb' + (i + 1) + '" />';
+                    html += '<label for="cb' + (i + 1) + '"><img src="' + array[i] + '" /></label>';
+                html += '</li>';
+            }
+            html += '</ul>';
+            document.getElementById('gallery').innerHTML = html;
+        }
+
+        let images = test();
+        print(images);
 
      </script>
 
@@ -75,17 +108,16 @@
                 <h1 class="animate__animated animate__bounceIn text-white p-18 text-center">Let's find some memes</h1>
                 <!--<img  class="animate__animated animate__bounceIn" src="/img/Nana_Anime.png">-->
                 <div class="container" >
+
                     <form action="">
-                        <select  multiple="multiple" class="image-picker show-html">
+
+                        <!--<select  multiple="multiple" class="image-picker show-html">
                             <option data-img-src="http://placekitten.com/220/200" value="1">Cute Kitten 1</option>
                             <option data-img-src="http://placekitten.com/180/200" value="2">Cute Kitten 2</option>
                             <option data-img-src="http://placekitten.com/130/200" value="3">Cute Kitten 3</option>
                             <option data-img-src="http://placekitten.com/270/200" value="4">Cute Kitten 4</option> 
-                        </select>
-                        <script>
-                           
+                        </select>-->
 
-                        </script>
                     </form>
                 </div>
         </header>
