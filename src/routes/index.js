@@ -21,19 +21,41 @@ router.post('/searching', async (req, res) => {
     language : req.body.language,
     filter: req.body.filter
   }
+
     console.log(data);
-  
+
     async function results () {
-        return google.scrape(data.topic, 250);
+      const results = await google.scrape(data.topic, 250);
+
+      if (data.filter === 'true') {
+        console.log('FILTERED');
+        const filteredResults = [];
+
+        for (let i = 0; i < results.length; i++) {
+          if(results[i].url.includes('lookaside.fbsbx.com') || results[i].url.includes('i.ytimg.com')) {
+            console.log('YOUTUBE AND FACEBOOK FOUNDED');
+          }
+          else {
+            if(results[i].url.includes('dopl3r.com'))
+              console.log('Dopler Encontrado en ' + results[i].url);
+            filteredResults.push(results[i]);
+          }
+            
+        }
+        return filteredResults;
+
+      } else {
+        console.log('NOT FILTERED');
+        return results;
+
+      }
     }
 
     const urls = await results();
 
-    for (let i = 0; i < urls.length; i++) {
+    /*for (let i = 0; i < urls.length; i++) {
       console.log(i + ' ' + urls[i].url);
-    }
-
-    console.log(urls);
+    }*/
 
   res.render('searching.html', { results: urls }); 
 });

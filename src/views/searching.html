@@ -86,8 +86,8 @@
             let html = '<ul>';
 
             for (let i = 0; i < array.length; i++) {
-                html  += '<li><input type="checkbox" id="cb' + (i + 1) + '" />';
-                    html += '<label for="cb' + (i + 1) + '"><img src="' + array[i] + '" /></label>';
+                html  += '<li><input type="checkbox" id="cb' + i + '" value="' + i + '"/>';
+                    html += '<label for="cb' + i + '"><img src="' + array[i] + '" /></label>';
                 html += '</li>';
             }
             html += '</ul>';
