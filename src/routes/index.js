@@ -7,6 +7,7 @@ const google = new Scraper({
   puppeteer: {
     headless: false,
   },
+  safe: true  // enable/disable safe search
 });
 
 
@@ -25,7 +26,7 @@ router.post('/searching', async (req, res) => {
     console.log(data);
 
     async function results () {
-      const results = await google.scrape(data.topic, 250);
+      const results = await google.scrape(data.topic, 1000);
 
       if (data.filter === 'true') {
         console.log('FILTERED');
@@ -47,7 +48,6 @@ router.post('/searching', async (req, res) => {
       } else {
         console.log('NOT FILTERED');
         return results;
-
       }
     }
 
