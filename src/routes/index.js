@@ -7,7 +7,6 @@ const google = new Scraper({
   puppeteer: {
     headless: false,
   },
-  safe: true  // enable/disable safe search
 });
 
 
@@ -53,11 +52,12 @@ router.post('/searching', async (req, res) => {
 
     const urls = await results();
 
-    /*for (let i = 0; i < urls.length; i++) {
-      console.log(i + ' ' + urls[i].url);
-    }*/
+    const info = {
+      topic: data.topic,
+      results: urls
+    }
 
-  res.render('searching.html', { results: urls }); 
+  res.render('searching.html', { info: info }); 
 });
 
 module.exports = router;

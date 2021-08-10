@@ -37,92 +37,22 @@
         </div>
      </nav>
 
+    
     <% var aux = []; %>
-    <% for (let i = 0; i < results.length; i++) { %>
-        <% aux.push( results[i].url.replace(/,/g,'¿') ); %> 
+    <% for (let i = 0; i < info.results.length; i++) { %>
+        <% aux.push( info.results[i].url.replace(/,/g,'¿') ); %> 
     <%} %>
 
-    <div id="gallery">
+    <% console.log(aux); %>
+    
+    <div id="container">
+        <div id="gallery">
+            <!--All results images from the search will print here-->
+        </div>
 
+        <button type="button" class="btn btn-info" onclick="generateInfo()">Generate File</button>
     </div>
-
-    <!--<ul>
-        <li><input type="checkbox" id="cb1" />
-          <label for="cb1"><img src="https://picsum.photos/seed/1/100" /></label>
-        </li>
-        <li><input type="checkbox" id="cb2" />
-          <label for="cb2"><img src="https://picsum.photos/seed/2/100" /></label>
-        </li>
-        <li><input type="checkbox" id="cb3" />
-          <label for="cb3"><img src="https://picsum.photos/seed/3/100" /></label>
-        </li>
-        <li><input type="checkbox" id="cb4" />
-          <label for="cb4"><img src="https://picsum.photos/seed/4/100" /></label>
-        </li>
-    </ul>-->
-
-
-     <script>
-
-        function test ( ) {         
-            let content = "<%= aux %>";
-            const array = content.split(',');
-
-            const originalSize = "<%= aux.length %>";
-            const newSize = array.length;
-
-            for (let i = 0; i < array.length; i++) {
-                array[i] = array[i].replace(/¿/g,','); //-- Reconvert (¿) to (,) -->
-                console.log((i + 1) + ' ' + array[i]);
-            }
-
-            console.log('Original size is: ' + originalSize);
-            console.log('New Size is: ' + newSize);
-
-            return array;
-        }
-
-        function print (array) {
-            let html = '<ul>';
-
-            for (let i = 0; i < array.length; i++) {
-                html  += '<li><input type="checkbox" id="cb' + i + '" value="' + i + '"/>';
-                    html += '<label for="cb' + i + '"><img src="' + array[i] + '" /></label>';
-                html += '</li>';
-            }
-            html += '</ul>';
-            document.getElementById('gallery').innerHTML = html;
-        }
-
-        let images = test();
-        print(images);
-
-     </script>
-
-       
-
-
-    <div class="container" style="height: 100vh; display: flex; justify-content: center; align-items: center; ">
-        <header class="row">
-            <div class="col-lg-12 text-center" style="max-width: 1000px; width: 100vw; padding-bottom: 100px;">
-                <h1 class="animate__animated animate__bounceIn text-white p-18 text-center">Let's find some memes</h1>
-                <!--<img  class="animate__animated animate__bounceIn" src="/img/Nana_Anime.png">-->
-                <div class="container" >
-
-                    <form action="">
-
-                        <!--<select  multiple="multiple" class="image-picker show-html">
-                            <option data-img-src="http://placekitten.com/220/200" value="1">Cute Kitten 1</option>
-                            <option data-img-src="http://placekitten.com/180/200" value="2">Cute Kitten 2</option>
-                            <option data-img-src="http://placekitten.com/130/200" value="3">Cute Kitten 3</option>
-                            <option data-img-src="http://placekitten.com/270/200" value="4">Cute Kitten 4</option> 
-                        </select>-->
-
-                    </form>
-                </div>
-        </header>
-    </div>
-
+    
     <div class="container-fluid" id="about">
         <div class="row bg-dark text-white p-5 text-center">
             <div class="col-sm-6">
@@ -131,10 +61,100 @@
             <div class="col-sm-6">
                 <h3>URL Memeify Generator</h3>
                 <p>A simple meme web searcher, created to complement the discord bot Memeify. <br>By Óscar Méndez.</p>
-
             </div>
         </div>
     </div>
-    <%- include ('partials/footer.html')%>
 </body>
+
+<script src="/js/FileSaver.js"></script>
+
+<script>
+    function generateInfo () {
+        const images = getImagesData();
+        const selected = getSelectedImages();
+        const newArrayImages = deleteSelectedImages(images,selected);
+        
+        const topic = getTopicData();
+        
+        generateFile(topic, newArrayImages);
+    }
+
+    function getImagesData () {
+        let content = "<%- aux %>";
+        const array = content.split(',');
+
+        return array;
+    }
+
+    function getTopicData () {
+        const topic = "<%= info.topic %>";
+        return topic;
+    }
+
+    function getSelectedImages () {
+        const input = document.getElementsByName('images[]');
+        const arraySelected = [];
+
+        for (let i = 0; i < input.length; i++) {
+            if(input[i].checked)
+                arraySelected.push(input[i].value);
+        }
+
+        return arraySelected;
+    }
+
+    function deleteSelectedImages (images, selected) {
+        const newArrayImages = [];
+
+        for (let i = 0; i < images.length; i++) {
+            console.log(selected[i] + ' = ' + i.toString());
+            if(!selected.includes(i.toString()))
+                newArrayImages.push(images[i]); 
+        } 
+        return newArrayImages;
+    }
+
+    function generateFile (topic, info) {
+        const fileName = topic + '.txt';
+        
+        var blob = new Blob([info],
+                { type: "text/plain;charset=utf-8" });
+            saveAs(blob, fileName);
+    }
+
+    function test ( ) {         
+        let content = "<%= aux %>";
+        const array = content.split(',');
+
+        const originalSize = "<%= aux.length %>";
+        const newSize = array.length;
+
+        for (let i = 0; i < array.length; i++) {
+            array[i] = array[i].replace(/¿/g,','); //-- Reconvert (¿) to (,) -->
+            console.log((i + 1) + ' ' + array[i]);
+        }
+
+        console.log('Original size is: ' + originalSize);
+        console.log('New Size is: ' + newSize);
+
+        return array;
+    }
+
+    function print (array) {
+        let html = '<ul>';
+
+        for (let i = 0; i < array.length; i++) {
+            html  += '<li><input type="checkbox" name="images[]" id="cb' + i + '" value="' + i + '"/>';
+                html += '<label for="cb' + i + '"><img src="' + array[i] + '" /></label>';
+            html += '</li>';
+        }
+        html += '</ul>';
+        document.getElementById('gallery').innerHTML = html;
+    }
+
+    let images = test();
+    print(images);
+
+ </script>
+
 </html>
