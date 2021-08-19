@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload</title>
+    <%- include ('partials/head.html')%>
+    <script src="https://www.lactame.com/lib/image-js/0.21.2/image.min.js"></script>
+</head>
+<style>
+    #drop_zone {
+        text-align: center;
+        border: 5px solid blue;
+        width: auto;
+        height: auto;
+    }
+</style>
+
+<body>
+    <%- include ('partials/navigation.html')%>
+
+    <div id="drop_zone" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);">
+        <p>Drag and drop Memes here!</p>
+
+         <form id="formId" action="/upload" method="post" enctype="multipart/form-data">
+            <input id="file" type="file" name="file" accept="text/plain" multiple/>
+            <input type="submit" value="Upload">
+        </form>
+    </div>
+
+    <div id="target">
+    </div>
+
+    <script>
+        function dropHandler(ev) {
+            console.log('File(s) dropped');
+            ev.preventDefault();
+
+            if(ev.dataTransfer.files)  {
+                var inputFile = document.getElementById('file');
+
+                for (var i = 0; i < ev.dataTransfer.files.length; i++) {
+                    if(!(ev.dataTransfer.files[i].type === 'text/plain')) {
+                        console.log('INVALID TYPE ... file[' + i + '].name = ' + ev.dataTransfer.files[i].name);
+                        inputFile.files = null;
+                        return;
+                    }      
+                }   
+                inputFile.files = ev.dataTransfer.files;
+            }     
+
+            removeDragData(ev)
+        }
+
+        function dragOverHandler(ev) {
+            console.log('File(s) in drop zone');
+            ev.preventDefault();
+        }
+
+        function removeDragData(ev) {
+            console.log('Removing drag data')
+
+            if (ev.dataTransfer.items) {
+                // Use DataTransferItemList interface to remove the drag data
+                ev.dataTransfer.items.clear();
+            } else {
+                // Use DataTransfer interface to remove the drag data
+                ev.dataTransfer.clearData();
+            }
+        }
+
+        $('#formId')
+        .submit( function( e ) {
+            e.preventDefault();
+
+            $.ajax( {
+            url: '/upload',
+            type: 'POST',
+            data: new FormData( this ),
+            processData: false,
+            contentType: false,
+            success: function(test) {
+                        var html = '<h2>' + test + '</h2>';
+                    $('#target').html(html);
+                }
+            });
+        });  
+    </script>
+
+</body>
+</html>

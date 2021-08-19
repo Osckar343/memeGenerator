@@ -15,7 +15,8 @@
     "express": "^4.17.1",
     "image-js": "^0.32.0",
     "images-scraper": "^6.3.0",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "multer": "^1.4.3"
   },
   "devDependencies": {
     "nodemon": "^2.0.12"
