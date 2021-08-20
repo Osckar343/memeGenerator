@@ -1,0 +1,30 @@
+#drop_zone {
+    background: white;
+    border-radius: 10px;
+    text-align: center;
+    border: 1px solid gray;
+    max-width: 800px;
+    width: 90vw;
+    height: auto;
+    margin: auto;
+}
+
+#drop_zone input[type="submit"] {
+    background-color: transparent;
+    border: none;
+    color: blue;
+    text-decoration: none;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+/*This hide the input file with css tricks*/
+.inputfile { 
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+

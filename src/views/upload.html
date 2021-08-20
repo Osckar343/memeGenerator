@@ -4,18 +4,12 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/css/upload.css" />
     <title>Upload</title>
     <%- include ('partials/head.html')%>
     <script src="https://www.lactame.com/lib/image-js/0.21.2/image.min.js"></script>
 </head>
-<style>
-    #drop_zone {
-        text-align: center;
-        border: 5px solid blue;
-        width: auto;
-        height: auto;
-    }
-</style>
+
 
 <body>
     <%- include ('partials/navigation.html')%>
@@ -24,8 +18,9 @@
         <p>Drag and drop Memes here!</p>
 
          <form id="formId" action="/upload" method="post" enctype="multipart/form-data">
-            <input id="file" type="file" name="file" accept="text/plain" multiple/>
-            <input type="submit" value="Upload">
+            <input id="file" type="file" class="inputfile" name="file" data-multiple-caption="{count} files selected" accept="text/plain" multiple/>
+            <label for="file"><span>Choose a file</span> </label>
+            <input type="submit" id="upload_button" value="Upload">
         </form>
     </div>
 
@@ -50,7 +45,11 @@
                 inputFile.files = ev.dataTransfer.files;
             }     
 
-            removeDragData(ev)
+            removeDragData(ev);
+            
+            /*This create an event*/
+            var event = new Event('change');
+            document.getElementById('file').dispatchEvent(event);
         }
 
         function dragOverHandler(ev) {
@@ -86,6 +85,29 @@
                 }
             });
         });  
+
+
+        /*This print the name files to the label of the input file*/
+        var inputs = document.querySelectorAll( '.inputfile' );
+        Array.prototype.forEach.call( inputs, function( input )
+        {
+            var label	 = input.nextElementSibling,
+                labelVal = label.innerHTML;
+
+            input.addEventListener( 'change', function( e )
+            {
+                var fileName = '';
+                if( this.files && this.files.length > 1 )
+                    fileName = ( this.getAttribute( 'data-multiple-caption' ) || '' ).replace( '{count}', this.files.length );
+                else
+                    fileName = e.target.value.split(/\\/g).pop();
+
+                if( fileName )
+                    label.querySelector( 'span' ).innerHTML = fileName;
+                else
+                    label.innerHTML = labelVal;
+            });
+        });
     </script>
 
 </body>
