@@ -1,25 +1,93 @@
 #drop_zone {
-    background: white;
-    border-radius: 10px;
+    font-family: 'Source Sans Pro', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 6px;
     text-align: center;
-    border: 1px solid gray;
     max-width: 800px;
     width: 90vw;
-    height: auto;
-    margin: auto;
+    height: 40vh;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 70px;
+    transition-duration: 0.4s;
+}
+
+#border_line {
+    color: #296394;
+    flex-direction: column;
+    font-size: larger;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition-duration: 0.2s;
+    border: 2px dashed #296394;
+    border-radius: 6px;
+}
+
+#formId {
+    flex-direction: column;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #drop_zone input[type="submit"] {
-    background-color: transparent;
-    border: none;
-    color: blue;
+    display: none;
+    border:transparent;
+    background-color: #296394;
+    color:white;
     text-decoration: none;
     margin: 4px 2px;
     cursor: pointer;
 }
 
+#drop_zone input[type="submit"]:hover {
+    background-color: #3C91D8;
+}
+
+#drop_zone label {
+    cursor: pointer;
+}
+
+#upload_icon {
+    height: 200px;
+    width: 200px;
+}
+
+#drop_zone #border_line{
+    pointer-events: none; /*This prevent to modify the dragEnter or dragLeave inside the main div*/
+}
+
+#drop_zone input, label{
+    pointer-events: all;
+}
+
+.is_void {
+    background: #A1CDF2;
+    color: black;
+}
+
+.is_on_drag {
+    background: #F5F5F5;
+    color: black;
+}
+
+.out {
+    height: 98%;
+    width: 98%;
+}
+
+.enter {
+    height: 95%;
+    width: 95%;
+}
+
+
 /*This hide the input file with css tricks*/
 .inputfile { 
+    pointer-events: none; /*This prevent to modify the dragEnter or dragLeave inside the main div*/
 	width: 0.1px;
 	height: 0.1px;
 	opacity: 0;

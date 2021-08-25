@@ -8,27 +8,52 @@
     <title>Upload</title>
     <%- include ('partials/head.html')%>
     <script src="https://www.lactame.com/lib/image-js/0.21.2/image.min.js"></script>
-</head>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@600&display=swap" rel="stylesheet">
+</head>
 
 <body>
     <%- include ('partials/navigation.html')%>
 
-    <div id="drop_zone" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);">
-        <p>Drag and drop Memes here!</p>
+    <div id="drop_zone" class="is_void" draggable="true" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);" ondragleave="out(event)" ondragenter="enter(event)">
+        <div id="border_line" class="out">
+                <img id="upload_icon" src="/img/icon_upload.png">
 
-         <form id="formId" action="/upload" method="post" enctype="multipart/form-data">
-            <input id="file" type="file" class="inputfile" name="file" data-multiple-caption="{count} files selected" accept="text/plain" multiple/>
-            <label for="file"><span>Choose a file</span> </label>
-            <input type="submit" id="upload_button" value="Upload">
-        </form>
+                <form id="formId" action="/upload" method="post" enctype="multipart/form-data">
+                    <input id="file" type="file" class="inputfile" name="file" data-multiple-caption="{count} files selected" accept="text/plain" multiple/>
+                    <label for="file"><span><b>Choose a meme file</b> or drag it here</span> </label>
+                    <input id="upload_button" type="submit" id="upload_button" value="Upload">
+                </form>
+        </div>
     </div>
+
 
     <div id="target">
     </div>
 
     <script>
+        function out(ev) {
+            console.log('out');
+            document.getElementById("drop_zone").classList.add('is_void');
+            document.getElementById("drop_zone").classList.remove('is_on_drag');
+            
+            document.getElementById("border_line").classList.add('out');
+            document.getElementById("border_line").classList.remove('enter');
+        }
+
+        function enter(ev) {
+            console.log('enter');
+            document.getElementById("drop_zone").classList.remove('is_void');
+            document.getElementById("drop_zone").classList.add('is_on_drag');
+                       
+            document.getElementById("border_line").classList.add('enter');
+            document.getElementById("border_line").classList.remove('out');
+        }
+
         function dropHandler(ev) {
+
             console.log('File(s) dropped');
             ev.preventDefault();
 
@@ -47,9 +72,24 @@
 
             removeDragData(ev);
             
+            document.getElementById("upload_button").style.display = 'flex';
+            
+            uploadRandomIcon();
+            
             /*This create an event*/
             var event = new Event('change');
             document.getElementById('file').dispatchEvent(event);
+        }
+
+        function uploadRandomIcon() {
+            const random = Math.floor(Math.random() * 4);
+            let icon = document.getElementById("upload_icon");
+
+            if(random === 1 ) icon.src = "/img/glasses_icon.png";
+            else if(random === 2) icon.src = "/img/meme_icon.png";
+            else if(random === 3) icon.src = "/img/troll_icon.png";
+            else if(random === 4) icon.src = "/img/doge_icon.png";
+            else icon.src = "/img/glasses_icon.png";
         }
 
         function dragOverHandler(ev) {
@@ -79,8 +119,8 @@
             data: new FormData( this ),
             processData: false,
             contentType: false,
-            success: function(test) {
-                        var html = '<h2>' + test + '</h2>';
+            success: function(response) {
+                        var html = '<h2>' + response + '</h2>';
                     $('#target').html(html);
                 }
             });
