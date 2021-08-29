@@ -1,0 +1,51 @@
+body {
+    background: #CDCDCD;
+}
+
+#content {
+    display: flex;
+    margin: auto;
+}
+
+button{
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: normal;
+    height: 50px;
+    width: 250px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 45px;
+    margin-bottom: 45px;
+}
+
+#info {
+    display: flex;
+    text-align: center;
+    font-size: 28px;
+    font-family: 'Source Sans Pro', sans-serif;;
+}
+
+.center {
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-items: center;
+}
+
+#info p {
+    margin: 20px;
+}
+
+.language {
+    color: #D93939;
+}
+
+.topic {
+    color: #1C4EDA;
+}
+
+.results {
+    color:#6F6F6F;
+}
+
+

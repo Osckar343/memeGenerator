@@ -44,24 +44,24 @@ ul {
   }
   
   label img {
-    height: 100px;
-    width: 100px;
+    height: 220px;
+    width: 220px;
     transition-duration: 0.2s;
     transform-origin: 50% 50%;
   }
   
   :checked+label {
-    border-color: #ddd;
+    border-color: red;
   }
   
   :checked+label::before {
-    content: "✓";
-    background-color: grey;
+    content: "✕";
+    background-color:red;
     transform: scale(1);
   }
   
   :checked+label img {
     transform: scale(0.9);
-    box-shadow: 0 0 5px #333;
+    box-shadow: 0 0 5px red;
     z-index: -1;
   }

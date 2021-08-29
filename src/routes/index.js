@@ -15,7 +15,7 @@ router.get('/', (req, res) => {
 });
 
 router.post('/searching', async (req, res) => {
-  const info = tools.searching(req);
+  const info = await tools.searching(req);
   res.render('searching.html', { info: info }); 
 });
 

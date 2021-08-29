@@ -6,6 +6,8 @@ const Channel = require('./models/channel');
 const Topic = require('./models/topic.js');
 const Link = require('./models/url.js');
 const Language = require('./models/language.js');
+const LanguageTopics = require('./models/languageTopics.js');
+const Url = require('./models/url.js');
 
 const ChannelTopics = require('./models/channelTopics.js');
 
@@ -15,6 +17,30 @@ const ChannelTopics = require('./models/channelTopics.js');
 
 module.exports = {
 
+    insertUrls: async function(languageTopics, urls) {
+      for (let i = 0; i < urls.length; i++) {
+          if(urls[i].length < 255)
+            await Url.create({ languageTopicId: languageTopics.id , url: urls[i] }); 
+      }
+    },
+
+    verifyLanguageTopics: async function(language, topic) {
+     // const query = await Topic.findOne( { where: { topic: topic } }); 
+      const query = await LanguageTopics.findOne({
+        where: {
+          [Op.and]: [
+            { languageId: language.id },
+            { topicId: topic.id }
+          ]
+        }
+      });
+
+      if(!query) //If doesn't exists
+        return LanguageTopics.create({ languageId: language.id , topicId: topic.id }); //Create a new topic with language
+      else 
+        return query; 
+    },
+
     verifyTopic: async function(topic) {
       const query = await Topic.findOne( { where: { topic: topic } }); 
 
@@ -22,6 +48,14 @@ module.exports = {
         return Topic.create({ topic: topic }); //Create a new topic
       else 
         return query; 
+    },
+
+    checkLanguage: async function(language) {
+      const query = await Language.findOne( { where: { code: language } }); 
+      if(query) 
+        return query;
+      else 
+        return null;
     },
 
     verifyServer: async function(discordServer) {
