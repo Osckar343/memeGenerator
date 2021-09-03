@@ -44,4 +44,4 @@ Category.belongsToMany(Topic, { through: CategoryTopics });
 Language.belongsToMany(Topic, { through: LanguageTopics });
 Topic.belongsToMany(Language, { through: LanguageTopics });
 
-sequelize.sync(/*{force: true}*/);
+sequelize.sync(/*{force: true}*/); //DON'T TOUCH!!!!!!!! THIS CAN DELETE ALL THE INFO DATABASE

@@ -1,3 +1,7 @@
+body {
+    background: #e2e2e2;
+}
+
 #drop_zone {
     font-family: 'Source Sans Pro', sans-serif;
     display: flex;
@@ -12,6 +16,14 @@
     margin-right: auto;
     margin-top: 70px;
     transition-duration: 0.4s;
+
+    /*These lines prevent to select*/
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
 }
 
 #border_line {
@@ -56,11 +68,15 @@
     width: 200px;
 }
 
-#drop_zone #border_line{
+#textFile {
+    cursor: default;
+}
+
+#drop_zone #border_line, #testDrag {
     pointer-events: none; /*This prevent to modify the dragEnter or dragLeave inside the main div*/
 }
 
-#drop_zone input, label{
+#drop_zone input, label {
     pointer-events: all;
 }
 
@@ -84,7 +100,6 @@
     width: 95%;
 }
 
-
 /*This hide the input file with css tricks*/
 .inputfile { 
     pointer-events: none; /*This prevent to modify the dragEnter or dragLeave inside the main div*/
@@ -94,5 +109,67 @@
 	overflow: hidden;
 	position: absolute;
 	z-index: -1;
+}
+
+#target {
+    display: none;
+    width: auto;
+    margin-top: 20px;
+    border: 1px solid rgb(92, 36, 36);
+    text-align: center;
+    overflow: scroll;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    border: 1px solid rgb(192, 192, 192);
+    height: 350px;
+    border-radius: 15px;
+}
+
+#target p {
+    border-bottom: 1px solid rgba(187, 187, 187, 0.5);
+    font-size: 20px;
+    margin: 15px;
+}
+
+#loader {
+    display: none;
+    margin: auto;
+    margin-top: 40px;
+    width: 80px;
+}
+
+.error {
+    color: rgb(180, 55, 55);
+}
+
+.warning {
+    color: rgb(194, 176, 14);
+}
+
+.uploaded {
+    color: rgb(13, 104, 13);
+}
+
+#textFile {
+    color: rgb(175, 37, 37);
+}
+
+::-webkit-scrollbar {
+    width: 9px;
+    height: 9px;
+}
+    
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 10px rgb(199, 199, 199);
+    border-radius: 10px;
+}
+    
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: rgb(156, 156, 156); 
+}
+    
+::-webkit-scrollbar-thumb:hover {
+    background: transparent;
 }
 

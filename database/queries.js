@@ -18,20 +18,26 @@ const ChannelTopics = require('./models/channelTopics.js');
 module.exports = {
 
     insertUrls: async function(languageTopics, urls) {
+      let amountResults = 0;
       for (let i = 0; i < urls.length; i++) {
-          if(urls[i].length < 255)
-            await Url.create({ languageTopicId: languageTopics.id , url: urls[i] }); 
+        const query = await Url.findOne({ where: { [Op.and]: [  { languageTopicId: languageTopics.id }, { url: urls[i] } ]  } }); //Check if URL with the Topic exists
+      
+        if(urls[i].length < 255 && urls[i].match(/(\b(https?):)?[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]/g) && !query) { //If does not... Store the URL
+          await Url.create({ languageTopicId: languageTopics.id , url: urls[i] }); 
+          amountResults++;
+        }
       }
+      return amountResults;
     },
 
     verifyLanguageTopics: async function(language, topic) {
-     // const query = await Topic.findOne( { where: { topic: topic } }); 
+      // const query = await Topic.findOne( { where: { topic: topic } }); 
       const query = await LanguageTopics.findOne({
         where: {
           [Op.and]: [
             { languageId: language.id },
             { topicId: topic.id }
-          ]
+          ] 
         }
       });
 

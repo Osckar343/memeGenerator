@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="/css/upload.css" />
     <title>Upload</title>
     <%- include ('partials/head.html')%>
+    <link rel="stylesheet" type="text/css" href="/css/upload.css" />
+    <link rel="stylesheet" type="text/css" href="/css/loaderAnimation.css">
     <script src="https://www.lactame.com/lib/image-js/0.21.2/image.min.js"></script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -17,20 +18,25 @@
 <body>
     <%- include ('partials/navigation.html')%>
 
-    <div id="drop_zone" class="is_void" draggable="true" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);" ondragleave="out(event)" ondragenter="enter(event)">
-        <div id="border_line" class="out">
-                <img id="upload_icon" src="/img/icon_upload.png">
+    <div id="drop_zone" unselectable="on" class="is_void" draggable="false" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);" ondragleave="out(event)" ondragenter="enter(event)" >
+        <div id="border_line" class="out" draggable="false">
+                <img unselectable="on" draggable="false" id="upload_icon" src="/img/icon_upload.png">
 
-                <form id="formId" action="/upload" method="post" enctype="multipart/form-data">
+                <form id="formId" draggable="false" unselectable="on" action="/upload" method="post" enctype="multipart/form-data">
                     <input id="file" type="file" class="inputfile" name="file" data-multiple-caption="{count} files selected" accept="text/plain" multiple/>
-                    <label for="file"><span><b>Choose a meme file</b> or drag it here</span> </label>
+                    <label id="testDrag" for="file" unselectable="on"><span>Drag memes here</span> </label>
+                    <p id="textFile"><span></span></p>
                     <input id="upload_button" type="submit" id="upload_button" value="Upload">
                 </form>
         </div>
     </div>
 
-
-    <div id="target">
+    <div class="container">
+        <div id="loader">
+            <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+        </div>
+        <div id="target">
+        </div>
     </div>
 
     <script>
@@ -53,32 +59,44 @@
         }
 
         function dropHandler(ev) {
-
             console.log('File(s) dropped');
             ev.preventDefault();
 
-            if(ev.dataTransfer.files)  {
-                var inputFile = document.getElementById('file');
+            if(ev.dataTransfer.files.length >= 1)  {
+                let message = document.getElementById('textFile');
+                const maxMemes = 100;
+
+                if(ev.dataTransfer.files.length >= maxMemes) {
+                    message.innerHTML = "Max amount of memes exceded (100)";
+                    out(ev);
+                    return;
+                }
 
                 for (var i = 0; i < ev.dataTransfer.files.length; i++) {
                     if(!(ev.dataTransfer.files[i].type === 'text/plain')) {
                         console.log('INVALID TYPE ... file[' + i + '].name = ' + ev.dataTransfer.files[i].name);
-                        inputFile.files = null;
+                        message.innerHTML = "At least one file is not valid";
+                        out(ev);
                         return;
                     }      
                 }   
+                message.innerHTML = "";
+
+                inputFile = document.getElementById('file');
                 inputFile.files = ev.dataTransfer.files;
-            }     
+
+                document.getElementById("upload_button").style.display = 'flex';
+            
+                uploadRandomIcon();
+                
+                /*This create an event*/
+                var event = new Event('change');
+                document.getElementById('file').dispatchEvent(event);
+            } else {
+                out(ev);
+            }
 
             removeDragData(ev);
-            
-            document.getElementById("upload_button").style.display = 'flex';
-            
-            uploadRandomIcon();
-            
-            /*This create an event*/
-            var event = new Event('change');
-            document.getElementById('file').dispatchEvent(event);
         }
 
         function uploadRandomIcon() {
@@ -112,16 +130,21 @@
         $('#formId')
         .submit( function( e ) {
             e.preventDefault();
-
             $.ajax( {
             url: '/upload',
             type: 'POST',
             data: new FormData( this ),
             processData: false,
             contentType: false,
+            beforeSend: function() {
+                $('#target').css({"display": "none"});
+                $('#loader').css({"display": "block"});
+            },
             success: function(response) {
-                        var html = '<h2>' + response + '</h2>';
-                    $('#target').html(html);
+                var html =  response;
+                $('#target').css({"display": "block"});
+                $('#loader').css({"display": "none"});
+                $('#target').html(html);
                 }
             });
         });  
