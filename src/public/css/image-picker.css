@@ -51,17 +51,17 @@ ul {
   }
   
   :checked+label {
-    border-color: red;
+    border-color: magenta;
   }
   
   :checked+label::before {
-    content: "✕";
-    background-color:red;
+    content: "♦";
+    background-color: magenta;
     transform: scale(1);
   }
   
   :checked+label img {
     transform: scale(0.9);
-    box-shadow: 0 0 5px red;
+    box-shadow: 0 0 5px magenta;
     z-index: -1;
   }

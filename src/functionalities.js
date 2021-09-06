@@ -5,6 +5,8 @@ const google = new Scraper({
     puppeteer: {
       headless: false,
     },
+    safe: false,  // enable/disable safe search
+    scrollDelay: 250,
   });
 
 const database = require('../database/queries.js');
@@ -20,9 +22,10 @@ module.exports = {
             search: ''
         }
         console.log(data);
+        console.log('tHIS EKISDE' , google.tbs);
 
         /*Define the language*/
-        if(data.language === 'ES') data.search = `Memes de ${data.topic} en español`;
+        if(data.language === 'ES') data.search = `Memes de ${data.topic}`;
         else if(data.language === 'EN') data.search = `Memes of ${data.topic}`;
           
         const urls = await searcher(data);
@@ -40,8 +43,8 @@ module.exports = {
 }
 
 async function searcher(data) {
-    const results = await google.scrape(data.topic, 1000);
-    
+    const results = await google.scrape(data.search , 1000);
+
     if (data.filter === 'true') {
         const filteredResults = [];
         for (let i = 0; i < results.length; i++) {
