@@ -19,6 +19,7 @@
     <%- include ('partials/navigation.html')%>
 
     <div id="drop_zone" unselectable="on" class="is_void" draggable="false" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);" ondragleave="out(event)" ondragenter="enter(event)" >
+
         <div id="border_line" class="out" draggable="false">
                 <img unselectable="on" draggable="false" id="upload_icon" src="/img/icon_upload.png">
 
@@ -26,10 +27,34 @@
                     <input id="file" type="file" class="inputfile" name="file" data-multiple-caption="{count} files selected" accept="text/plain" multiple/>
                     <label id="testDrag" for="file" unselectable="on"><span>Drag memes here</span> </label>
                     <p id="textFile"><span></span></p>
+
+                
+                    
+                    <% for (let i = 0; i < info.length; i++) { %>
+                        <select id="categories" name="category">
+                            <option hidden value="0">Choose a category</option>
+
+                            <%- "<option value='"%><%- info[i].id %><%- "'>" %> <%- info[i].category %> <%- "</option>" %>
+                        </select>
+                    <%} %>
+
+
+                    <!--<select id="categories" name="categories">
+                        <option hidden value="0">Category</option>
+                        <option value="1">Videogames</option>
+                        <option value="2">Anime</option>
+                        <option value="3">Movies</option>
+                    </select>-->
+
                     <input id="upload_button" type="submit" id="upload_button" value="Upload">
+                   
                 </form>
+
+
         </div>
     </div>
+
+
 
     <div class="container">
         <div id="loader">
@@ -86,6 +111,7 @@
                 inputFile.files = ev.dataTransfer.files;
 
                 document.getElementById("upload_button").style.display = 'flex';
+                document.getElementById("categories").style.display = "flex";
             
                 uploadRandomIcon();
                 
@@ -130,6 +156,19 @@
         $('#formId')
         .submit( function( e ) {
             e.preventDefault();
+            //Validate that the user 
+            const category = document.getElementById('categories').value;
+            console.log('categoryId: '  + category);
+
+            let message = document.getElementById('textFile');
+
+            if(category === '0') {
+                message.textContent = 'You must choose a category';
+                return;
+            } else {
+                message.textContent = ''; //This delete the error message
+            }  
+            
             $.ajax( {
             url: '/upload',
             type: 'POST',
@@ -145,7 +184,7 @@
                 $('#target').css({"display": "block"});
                 $('#loader').css({"display": "none"});
                 $('#target').html(html);
-                }
+            }
             });
         });  
 

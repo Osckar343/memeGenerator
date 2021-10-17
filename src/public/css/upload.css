@@ -55,6 +55,18 @@ body {
     cursor: pointer;
 }
 
+#categories {
+    pointer-events: all;
+    display: none;
+    border: 1px solid #296394;
+    border-radius: 5px;
+    background-color: transparent;
+    color: #296394;
+    text-decoration: none;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
 #drop_zone input[type="submit"]:hover {
     background-color: #3C91D8;
 }

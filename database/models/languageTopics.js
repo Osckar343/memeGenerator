@@ -15,7 +15,7 @@ const channelTopic = sequelize.define("language_topics", {
         primaryKey: true,
     },
 
-    voted: {
+    votes: {
         type: Sequelize.INTEGER,
         allowNull: false,
         defaultValue: 0

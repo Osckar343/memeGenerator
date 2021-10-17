@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administrator | Category</title>
+    <%- include ('partials/head.html')%>
+    <link rel="stylesheet" type="text/css" href="/css/upload.css" />
+    <link rel="stylesheet" type="text/css" href="/css/loaderAnimation.css">
+    <script src="https://www.lactame.com/lib/image-js/0.21.2/image.min.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <%- include ('partials/navigation.html')%>
+
+    <div class="container">
+        <br><br><br><br>
+        <form id="categoryForm"  action="/category" method="post" enctype="form-data">
+            <div class="form-group">
+                <label for="formGroupExampleInput">Category name</label>
+                <input name="category" type="text" class="form-control" id="formGroupExampleInput" placeholder="Enter category name" required>
+                <small class="form-text text-muted">All categories must be in English.</small>
+            </div>
+
+            <div class="form-group form-check">
+              <input type="checkbox" class="form-check-input" id="exampleCheck1" required>
+              <label class="form-check-label" for="exampleCheck1">This category is well-written and It is in English.</label>
+            </div>
+            <button type="submit" class="btn btn-primary">Create category</button>
+        </form>
+    </div>
+
+    <div class="container">
+        <div id="loader">
+            <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+        </div>
+        <div id="target">
+        </div>
+    </div>
+
+
+    <script>
+         $('#categoryForm')
+        .submit( function( e ) {
+            e.preventDefault();
+
+            var category = $('#category').attr("data_id");
+            $.ajax( {
+            url: '/category',
+            type: 'POST',
+            data: $("#categoryForm").serialize(), //JSON.stringify({ "category" : categoryName}),
+            processData: false,
+            contentType: false,
+            beforeSend: function() {
+                $('#target').css({"display": "none"});
+                $('#loader').css({"display": "block"});
+            },
+            success: function(response) {
+                var html =  response;
+                $('#target').css({"display": "block"});
+                $('#loader').css({"display": "none"});
+                $('#target').html(html);
+                }
+            });
+        });  
+    </script>
+
+</body>
+</html>

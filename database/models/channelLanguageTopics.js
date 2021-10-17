@@ -1,11 +1,11 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../database.js');
 
-const channelTopic = sequelize.define("channel_topics", {
+const channelTopic = sequelize.define("channel_languageTopics", {
     /*Many to Many table relation*/
     /*The relation is made in the table relations file, and as result we have next fields: */
 
-    //channelId
+    //languageTopicsId
     //topicId
 
     },{

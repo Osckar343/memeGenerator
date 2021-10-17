@@ -1,15 +1,20 @@
 const { Op, Sequelize, Association } = require("sequelize");
 const sequelize = require('./database.js');
 
+//Defining all sql tables of the database
 const Server = require('./models/server.js');
-const Channel = require('./models/channel');
+const Channel = require('./models/channel.js');
 const Topic = require('./models/topic.js');
-const Link = require('./models/url.js');
-const Language = require('./models/language.js');
-const LanguageTopics = require('./models/languageTopics.js');
 const Url = require('./models/url.js');
+const Category = require('./models/category.js');
+const Language = require('./models/language.js');
+const ChannelLanguageTopics = require('./models/channelLanguageTopics.js'); //
+const ChannelUrls = require('./models/channelUrls.js');
+const CategoryTopics = require('./models/categoryTopics.js');
+const LanguageTopics = require('./models/languageTopics.js');
+const topic = require("./models/topic.js");
+const { getLanguageTopicsByDatabaseTopicAndDatabaseLanguage } = require("../../meme-discord-bot/database/queries/queries.js");
 
-const ChannelTopics = require('./models/channelTopics.js');
 
 //Verify: Check if a record exists... if not, Insert one. (Check and Insert together)
 //Check: Only check if record exists.
@@ -28,6 +33,39 @@ module.exports = {
         }
       }
       return amountResults;
+    },
+
+    verifyCategoryTopics: async function(databaseTopic, categoryId) {
+      const query = await CategoryTopics.findOne({
+        where: {
+          [Op.and]: [
+            { topicId: databaseTopic.id },
+            { categoryId: categoryId }
+          ] 
+        }
+      });
+
+      if(!query) //If doesn't exists
+        return CategoryTopics.create({ topicId: databaseTopic.id, categoryId: categoryId  })
+      else 
+        return query; 
+    },
+
+    uploadCategory: async function(categoryName) {
+      const uploaded = await Category.create({ category: categoryName});
+      if(uploaded) 
+        return true;
+      else 
+        return false;
+    },
+
+    checkCategory: async function(categoryName) {
+      const query = await Category.findOne({ where: {category: categoryName} });
+      return query;
+    },
+
+    getAllCategories: async function() {
+      return Category.findAll();
     },
 
     verifyLanguageTopics: async function(language, topic) {

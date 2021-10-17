@@ -19,22 +19,52 @@ const channel = sequelize.define("channel", {
         autoIncrement: false,
     },
 
-    memesPerHour: {
-        type: Sequelize.INTEGER,
+    frequency: {
+        type: Sequelize.TINYINT,
         allowNull: false,
-        defaultValue: 2
+        defaultValue: 2,
+        validate: {
+            min: 1,
+            max: 3
+        }
     },
 
-    activePoll: {
+    poll: {
         type: Sequelize.BOOLEAN,
         allowNull: false,
         defaultValue: false
     },
 
-    activeGif: {
+    pollDate: {
+        type: Sequelize.DATE,
+        allowNull: true,
+        defaultValue: null
+    },
+
+    pollAnswers: {
+        type: Sequelize.TINYINT,
+        allowNull: false,
+        defaultValue: 3,
+        validate: {
+            min: 2,
+            max: 5
+        }
+    },
+
+    pollGif: {
         type: Sequelize.BOOLEAN,
         allowNull: false,
         defaultValue: false
+    },
+
+    pollDuration: {
+        type: Sequelize.TINYINT,
+        allowNull: false,
+        defaultValue: 30,
+        validate: {
+            min: 5,
+            max: 60
+        }
     }
 });
 

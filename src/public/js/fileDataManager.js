@@ -1,11 +1,15 @@
+var badImages = []; //Global Variable
+
 function generateInfo (topic, content, language) {
+    console.log(badImages);
+
     const checkbox = document.getElementById('switch').checked;
     const images = getImagesData(content);
     const selected = getSelectedImages();
     let newArrayImages = [];
 
-    if(checkbox) newArrayImages = saveSelectedImages(images, selected);
-    else if(!checkbox)  newArrayImages = deleteSelectedImages(images,selected);
+    if(checkbox) newArrayImages = saveSelectedImages(images, selected, badImages);
+    else if(!checkbox)  newArrayImages = deleteSelectedImages(images,selected, badImages);
 
     generateFile(topic, language, newArrayImages);
 }
@@ -28,22 +32,22 @@ function getSelectedImages () {
     return arraySelected;
 }
 
-function deleteSelectedImages (images, selected) {
+function deleteSelectedImages (images, selected, badImagesIndex) {
     const newArrayImages = [];
 
     for (let i = 0; i < images.length; i++) {
-        if(!selected.includes(i.toString()))
-            newArrayImages.push(images[i]); 
+        if(!selected.includes(i.toString()) && !badImagesIndex.includes(i))
+            newArrayImages.push(images[i]);
     } 
     return newArrayImages;
 }
 
-function saveSelectedImages (images, selected) {
+function saveSelectedImages (images, selected, badImagesIndex) {
     const newArrayImages = [];
 
     for (let i = 0; i < images.length; i++) {
-        if(selected.includes(i.toString()))
-            newArrayImages.push(images[i]); 
+        if(selected.includes(i.toString()) && !badImagesIndex.includes(i))
+            newArrayImages.push(images[i]);
     } 
     return newArrayImages;
 }
@@ -70,8 +74,8 @@ function printImages (array, divElement) {
 
     let html = '<ul>';
     for (let i = 0; i < array.length; i++) {
-        html  += '<li><input type="checkbox" name="images[]" id="cb' + i + '" value="' + i + '" onchange="updateResultsAmount(`<%= aux %>`)"/>';
-            html += '<label for="cb' + i + '"><img src="' + array[i] + '" /></label>';
+        html  += '<li id="list' + i + '"><input type="checkbox" name="images[]" id="cb' + i + '" value="' + i + '" onchange="updateResultsAmount(`<%= aux %>`)"/>';
+            html += '<label for="cb' + i + '"><img id="img-link' + i +'" src="' + array[i] + '" onerror="checkWrongImages(' + i + ')"/></label>';
         html += '</li>';
     }
     html += '</ul>';
@@ -79,8 +83,16 @@ function printImages (array, divElement) {
     document.getElementById(divElement).innerHTML = html; //Prints the images
 }
 
+function checkWrongImages(i) {
+    badImages.push(i);
+    console.log('Bad Image on: ' , i );
+    console.log(document.getElementById('img-link' + i).src);
+    document.getElementById(`list${i}`).style.display = 'none';
+    updateResultsAmount();
+}
+
 function updateResultsAmount() {
-    const originalAmount = document.querySelectorAll('input[type="checkbox"]').length - 1; 
+    const originalAmount = document.querySelectorAll('input[type="checkbox"]').length - 1 - badImages.length; 
     const selectedAmount = document.querySelectorAll('input[type="checkbox"]:checked').length; //get the amount of all selected checkboxes on the page
     const checkbox = document.getElementById('switch').checked;
     let results = 0;
